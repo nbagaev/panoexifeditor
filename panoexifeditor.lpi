@@ -16,12 +16,9 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <MajorVersionNr Value="1"/>
-      <MinorVersionNr Value="1"/>
-      <RevisionNr Value="1"/>
-      <BuildNr Value="3"/>
-      <Attributes pvaSpecialBuild="True"/>
-      <StringTable OriginalFilename="Pano Exif Editor" ProductName="Pano Exif Editor" ProductVersion="1.1.1.1"/>
+      <BuildNr Value="1"/>
+      <Attributes pvaPreRelease="True"/>
+      <StringTable OriginalFilename="Pano Exif Editor" ProductName="Pano Exif Editor"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
