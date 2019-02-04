@@ -1,0 +1,169 @@
+object Form1: TForm1
+  Left = 575
+  Height = 683
+  Top = 15
+  Width = 615
+  AllowDropFiles = True
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
+  Caption = 'Pano Exif Editor'
+  ClientHeight = 683
+  ClientWidth = 615
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDropFiles = FormDropFiles
+  Position = poScreenCenter
+  LCLVersion = '1.8.0.6'
+  object ValueListEditor1: TValueListEditor
+    Left = 8
+    Height = 356
+    Top = 320
+    Width = 400
+    DefaultColWidth = 250
+    FixedCols = 0
+    RowCount = 16
+    TabOrder = 2
+    TabStop = False
+    OnKeyUp = ValueListEditor1KeyUp
+    Strings.Strings = (
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+    )
+    TitleCaptions.Strings = (
+      'Tag'
+      'Value'
+    )
+    ColWidths = (
+      250
+      146
+    )
+  end
+  object btnOpen: TButton
+    Left = 424
+    Height = 25
+    Top = 320
+    Width = 112
+    Caption = 'Select image file'
+    OnClick = btnOpenClick
+    TabOrder = 0
+  end
+  object btnWriteTags: TButton
+    Left = 424
+    Height = 25
+    Top = 640
+    Width = 112
+    Caption = 'Write tags'
+    OnClick = btnWriteTagsClick
+    TabOrder = 1
+  end
+  object rbtnNorth: TRadioButton
+    Left = 424
+    Height = 19
+    Top = 376
+    Width = 51
+    Caption = 'North'
+    Checked = True
+    Font.Color = clRed
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 4
+    TabStop = True
+  end
+  object rbtnView: TRadioButton
+    Left = 424
+    Height = 19
+    Top = 408
+    Width = 76
+    Caption = 'Initial view'
+    Font.Color = clGreen
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 3
+  end
+  object Panel1: TPanel
+    Left = 8
+    Height = 300
+    Top = 8
+    Width = 600
+    BorderStyle = bsSingle
+    ClientHeight = 296
+    ClientWidth = 596
+    TabOrder = 5
+    object Image1: TImage
+      Cursor = crCross
+      Left = 0
+      Height = 300
+      Top = 0
+      Width = 600
+      OnMouseDown = Image1MouseDown
+      OnMouseMove = Image1MouseMove
+      OnMouseUp = Image1MouseUp
+      OnPaint = Image1Paint
+      Proportional = True
+      Stretch = True
+    end
+  end
+  object Button1: TButton
+    Left = 440
+    Height = 25
+    Top = 544
+    Width = 75
+    Caption = 'Button1'
+    OnClick = Button1Click
+    TabOrder = 6
+    Visible = False
+  end
+  object CheckBox1: TCheckBox
+    Left = 424
+    Height = 19
+    Top = 456
+    Width = 80
+    Caption = 'Stay on top'
+    OnChange = CheckBox1Change
+    TabOrder = 7
+  end
+  object CheckBox2: TCheckBox
+    Left = 424
+    Height = 19
+    Top = 488
+    Width = 82
+    Caption = 'Load image'
+    OnChange = CheckBox2Change
+    TabOrder = 8
+  end
+  object OpenDialog1: TOpenDialog
+    DefaultExt = '.jpg'
+    Filter = 'Bilder|*.jpeg;*.jpg;*.tiff;*.tif'
+    left = 552
+    top = 384
+  end
+  object ProcessUTF8_1: TProcessUTF8
+    Active = False
+    Options = []
+    Priority = ppNormal
+    StartupOptions = []
+    ShowWindow = swoNone
+    WindowColumns = 0
+    WindowHeight = 0
+    WindowLeft = 0
+    WindowRows = 0
+    WindowTop = 0
+    WindowWidth = 0
+    FillAttribute = 0
+    left = 552
+    top = 320
+  end
+end

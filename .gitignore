@@ -1,0 +1,7 @@
+*.lps
+exiftool/
+lib/
+backup/
+dist/
+argfile.txt
+*.exe
