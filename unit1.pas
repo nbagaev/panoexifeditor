@@ -164,7 +164,7 @@ begin
       begin
         ValueListEditor1.Strings.Add(TagsToRead[i] + '=' + Trim(sl.ValueFromIndex[i]));
       end;
-    self.Caption := 'Another Exiftool GUI - ' + ExtractFileName(image_file);
+    self.Caption := Application.Title + ' - ' + ExtractFileName(image_file);
     end
     else
     begin
@@ -367,25 +367,36 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   Path := ExtractFilePath(ParamStr(0));
+  //check exiftool
+  if not FileExists(Path + 'exiftool/exiftool.exe') then
+  begin
+      ShowMessage('exiftool not found');
+      Application.Terminate;
+  end;
   north_x := 0;
   view_x := 0;
   TagsToRead := Tstringlist.Create;
   TagsToInitAnyway := Tstringlist.Create;
   TagsToInitIfNotExists := Tstringlist.Create;
   TagsToSetAfterEdit := Tstringlist.Create;
+  if not FileExists(Path + 'ini.ini') then
+  begin
+    //todo write default ini
+  end;
   if ReadIni then
   begin
     CheckBox1.Checked := modal;
     CheckBox2.Checked := load_image;
-    if ParamCount>0 then
-    begin
-      if (MatchStr(LowerCase(ExtractFileExt(ParamStr(1))), ['.jpg', '.jpeg', '.tif', '.tiff'])) then
+
+      if ParamCount>0 then
       begin
-        image_file:=ParamStr(1);
-        Start;
+        if (MatchStr(LowerCase(ExtractFileExt(ParamStr(1))), ['.jpg', '.jpeg', '.tif', '.tiff'])) then
+        begin
+          image_file:=ParamStr(1);
+          Start;
+        end;
       end;
-    end;
-  end
+    end
   else
   begin
     ShowMessage('Can''t read ini.ini');
