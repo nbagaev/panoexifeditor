@@ -1,0 +1,30 @@
+object ProgressForm: TProgressForm
+  Left = 475
+  Height = 125
+  Top = 236
+  Width = 220
+  BorderIcons = []
+  Caption = 'ProgressForm'
+  ClientHeight = 125
+  ClientWidth = 220
+  OnHide = FormHide
+  OnShow = FormShow
+  Position = poMainFormCenter
+  LCLVersion = '1.8.0.6'
+  object lbMessage: TLabel
+    Left = 68
+    Height = 15
+    Top = 23
+    Width = 91
+    Caption = ' Loading image...'
+    ParentColor = False
+  end
+  object lbMotion: TLabel
+    Left = 108
+    Height = 15
+    Top = 68
+    Width = 5
+    Caption = '-'
+    ParentColor = False
+  end
+end

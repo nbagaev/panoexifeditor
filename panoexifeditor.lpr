@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, Unit1
+  Forms, mainunit, resizeimage, progress, imgloadthread
   { you can add units after this };
 
 {$R *.res}
@@ -16,7 +16,8 @@ begin
   Application.Title:='Pano Exif Editor';
   RequireDerivedFormResource := True;
   Application.Initialize;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TProgressForm, ProgressForm);
   Application.Run;
 end.
 
