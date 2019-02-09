@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, UTF8Process, Forms, Controls, Graphics, Dialogs,
-  ExtCtrls, ValEdit, StdCtrls, FPReadTiff, Process, StrUtils, INIFiles, Grids,
+  ExtCtrls, ValEdit, StdCtrls, Process, StrUtils, INIFiles, Grids,
   ComCtrls, imgloadthread, progress;
 
 type

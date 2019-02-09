@@ -5,19 +5,19 @@ unit imgloadthread;
 interface
 
 uses
-  Classes, SysUtils, FPimage, FPReadJPEG, FPReadTIFF, StrUtils, resizeimage;
+  Classes, SysUtils, FPimage, FPReadJPEG, _FPReadTIFF, StrUtils, resizeimage;
 
  type
 
     TImgLoadThread = class(TThread)
     private
-      ResizedImage : TFPCompactImgRGB8Bit;
+      ResizedImage: TFPCompactImgRGB8Bit;
       procedure AssignImage;
     protected
       procedure Execute; override;
     public
-      imgPath:String;
-      Constructor Create(CreateSuspended : boolean);
+      imgPath: String;
+      Constructor Create(CreateSuspended: boolean);
     end;
 
 implementation
@@ -30,7 +30,7 @@ end;
 
 procedure TImgLoadThread.Execute;
 var
-  SourceImage : TFPCompactImgRGB8Bit;
+  SourceImage: TFPCompactImgRGB8Bit;
   jpegReader: TFPReaderJpeg;
   tiffReader: TFPReaderTiff;
 begin
