@@ -42,15 +42,15 @@ type
     procedure TagEditorKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
   private
-    function ReadTags(ImageFile:String):Boolean;
+    function ReadTags(ImageFile:String): Boolean;
     procedure LoadImage(ImageFile:String);
-    procedure SaveMousePos(x,y:Integer);
+    procedure SaveMousePos(x,y: Word);
     function ReadIni(): Boolean;
     procedure WriteTags();
     procedure InitTags();
     procedure Start();
     procedure SetAfterEdit();
-    function AllTagsSetted():boolean;
+    function AllTagsSetted(): Boolean;
     procedure InitPos();
     procedure UpdatePos();
     procedure imgLoadThreadOnTerminate(ASender : TObject );
@@ -62,45 +62,45 @@ type
 var
   MainForm: TMainForm;
   north_x,
-  view_x : Integer;
-  bMouseDown : boolean;
+  view_x: Word;
+  bMouseDown: Boolean;
   NorthDirectionTag,
   InitialViewTag,
   ImageFile: String;
-  ini:TIniFile;
+  ini: TIniFile;
   TagsToRead,
   TagsToInitAnyway,
   TagsToInitIfNotExists,
-  TagsToSetAfterEdit:Tstringlist;
-  image_loaded:boolean;
-  bLoadImage:boolean;
-  bStayOnTop:boolean;
+  TagsToSetAfterEdit: Tstringlist;
+  image_loaded: Boolean;
+  bLoadImage: Boolean;
+  bStayOnTop: Boolean;
   ExiftoolPath,
   ArgfilePath,
-  AppPath:String;
-  bImageLoadThreadTerminated:boolean;
+  AppPath: String;
+  bImageLoadThreadTerminated: Boolean;
 
 implementation
 
-function NorthPosToDeg(x, img_width:Integer): Integer;
+function NorthPosToDeg(x,img_width: Int16): Int16;
 begin
-  if (x <= img_width / 2) then
-    Result := Trunc((img_width / 2 - x) * 360 / img_width)
+  if (x<=img_width/2) then
+    Result:=Trunc((img_width/2-x)*360/img_width)
   else
-    Result := Trunc((img_width / 2 + img_width - x) * 360 / img_width);
-  if Result = 360 then
-    Result := 0
+    Result:=Trunc((img_width/2+img_width-x)*360/img_width);
+  if Result=360 then
+    Result:=0
 end;
 
-function NorthDegToPos(deg, img_width:Integer): Integer;
+function NorthDegToPos(deg,img_width: Int16): Int16;
 begin
-  if (deg <= 180) then
-     Result := Trunc(img_width / 2 - deg * img_width / 360)
+  if (deg<=180) then
+     Result:=Trunc(img_width/2-deg*img_width/360)
   else
-     Result := Trunc((img_width / 2 + img_width - deg * img_width / 360));
+     Result:=Trunc((img_width/2+img_width-deg*img_width/360));
 end;
 
-function ViewPosToDeg(view_x,north_x,img_width:Integer): Integer;
+function ViewPosToDeg(view_x,north_x,img_width: Int16): Int16;
 begin
 if view_x > north_x then
     Result:= Trunc((view_x - north_x) * 360 / img_width)
@@ -110,8 +110,8 @@ if Result = 360 then
   Result := 0
 end;
 
-function ViewDegToPos(view_deg,north_x,img_width:Integer): Integer;
-var offset:Integer;
+function ViewDegToPos(view_deg,north_x,img_width: Int16): Int16;
+var offset: Int16;
 begin
   //todo
   offset := Trunc(img_width / 360 * view_deg);
@@ -125,35 +125,35 @@ end;
 
 { TMainForm }
 
-function TMainForm.ReadTags(ImageFile:String): boolean;
+function TMainForm.ReadTags(ImageFile: String): Boolean;
 var
-  sl : TStringList;
-  i : Integer;
+  sl: TStringList;
+  i: Word;
 begin
-  Result := true;
-  sl := TStringList.Create;
+  Result:=true;
+  sl:=TStringList.Create;
   TagEditor.Clear;
-  north_x := 0;
-  view_x := 0;
+  north_x:=0;
+  view_x:=0;
   sl.Add('-charset');
   sl.Add('filename=utf8');
   sl.Add('-S');
   sl.Add('-f');
   sl.Add('-c');
   sl.Add('%+.6f');
-  for i := 0 to TagsToRead.Count-1 do
-    sl.Add('-' + TagsToRead[i]);
+  for i:=0 to TagsToRead.Count-1 do
+    sl.Add('-'+TagsToRead[i]);
   sl.Add(ImageFile);
-  sl.SaveToFile(AppPath + ArgfilePath);
+  sl.SaveToFile(AppPath+ArgfilePath);
   try
     with RunExiftool do
     begin
       Options := [poWaitOnExit, poUsePipes, poStderrToOutPut];
       ShowWindow := swoHIDE;
-      Executable := AppPath + ExiftoolPath;
+      Executable := AppPath+ExiftoolPath;
       Parameters.Clear;
       Parameters.Add('-@');
-      Parameters.Add(AppPath + ArgfilePath);
+      Parameters.Add(AppPath+ArgfilePath);
       Execute;
     end;
   finally
@@ -162,27 +162,27 @@ begin
     if sl.Count=TagsToRead.Count then
     begin
       sl.NameValueSeparator:=':';
-      for i := 0 to TagsToRead.Count-1 do
+      for i:=0 to TagsToRead.Count-1 do
       begin
-        TagEditor.Strings.Add(TagsToRead[i] + '=' + Trim(sl.ValueFromIndex[i]));
+        TagEditor.Strings.Add(TagsToRead[i]+'='+Trim(sl.ValueFromIndex[i]));
       end;
-    self.Caption := Application.Title + ' - ' + ExtractFileName(ImageFile);
+    self.Caption:=Application.Title+' - '+ExtractFileName(ImageFile);
     end
     else
     begin
       //failed to read exif
-      ShowMessage('exiftool: ' + sl.Text);
-      Result := false;
+      ShowMessage('exiftool: '+sl.Text);
+      Result:=false;
     end;
     sl.Free;
   end;
 end;
 
-function TMainForm.AllTagsSetted():boolean;
-var i : Integer;
+function TMainForm.AllTagsSetted(): Boolean;
+var i: Word;
 begin
   Result:=true;
-  for i := 0 to TagEditor.Strings.Count - 1 do
+  for i:=0 to TagEditor.Strings.Count-1 do
   begin
     if (TagEditor.Strings.ValueFromIndex[i]='-') or (TagEditor.Strings.ValueFromIndex[i]='') then
       Result:=false;
@@ -205,51 +205,52 @@ begin
     InitTags();
     InitPos();
     if bLoadImage then
-      LoadImage(ImageFile);
+    Image1.Picture.Clear;
+    LoadImage(ImageFile);
   end;
 end;
 
 procedure TMainForm.WriteTags;
 var
-  sl : TStringList;
-  i : Integer;
+  sl: TStringList;
+  i: Word;
 begin
-  sl := TStringList.Create;
+  sl:=TStringList.Create;
   sl.Add('-charset');
   sl.Add('filename=utf8');
   sl.Add('-overwrite_original');
   sl.Add('-S');
-  for i := 0 to TagEditor.Strings.Count - 1 do
-    sl.Add('-' + TagEditor.Strings[i]);
+  for i:=0 to TagEditor.Strings.Count-1 do
+    sl.Add('-'+TagEditor.Strings[i]);
   sl.Add(ImageFile);
-  sl.SaveToFile(AppPath + ArgfilePath);
+  sl.SaveToFile(AppPath+ArgfilePath);
   try
     with RunExiftool do
     begin
       Options := [poWaitOnExit, poUsePipes, poStderrToOutPut];
       ShowWindow := swoHIDE;
-      Executable := AppPath + ExiftoolPath;
+      Executable := AppPath+ExiftoolPath;
       Parameters.Clear;
       Parameters.Add('-@');
-      Parameters.Add(AppPath + ArgfilePath);
+      Parameters.Add(AppPath+ArgfilePath);
       Execute;
     end;
   finally
     sl.Clear;
     sl.LoadFromStream(RunExiftool.Output);
-    ShowMessage('exiftool: ' + sl.Text);
+    ShowMessage('exiftool: '+sl.Text);
     sl.Free;
   end;
 end;
 
 procedure TMainForm.InitTags();
-var i,pos,pos1:Integer;
+var i,pos,pos1: Integer;
 begin
-  for i := 0 to TagEditor.Strings.Count - 1 do
+  for i:=0 to TagEditor.Strings.Count-1 do
   begin
     //TagsToInitAnyway
-    pos := TagsToInitAnyway.IndexOfName(TagEditor.Strings.Names[i]);
-    if pos > -1 then
+    pos:= TagsToInitAnyway.IndexOfName(TagEditor.Strings.Names[i]);
+    if pos>-1 then
     begin
       if TagEditor.FindRow(TagsToInitAnyway.ValueFromIndex[pos], pos1) then
       begin
@@ -263,8 +264,8 @@ begin
         TagEditor.Strings.ValueFromIndex[i]:=TagsToInitAnyway.ValueFromIndex[pos];
     end;
     //TagsToInitIfNotExist
-    pos := TagsToInitIfNotExists.IndexOfName(TagEditor.Strings.Names[i]);
-    if pos > -1 then
+    pos:=TagsToInitIfNotExists.IndexOfName(TagEditor.Strings.Names[i]);
+    if pos>-1 then
     begin
       if TagEditor.Strings.ValueFromIndex[i]='-' then
         //if dest-tag not filled
@@ -283,23 +284,27 @@ begin
 end;
 
 procedure TMainForm.SetAfterEdit();
-var i,pos,pos1:Integer;
+var i,pos,pos1: Integer;
 begin
-  for i := 0 to TagEditor.Strings.Count - 1 do
+  for i:=0 to TagEditor.Strings.Count-1 do
   begin
-    pos := TagsToSetAfterEdit.IndexOfName(TagEditor.Strings.Names[i]);
-    if pos > -1 then
+    //is tag[i] in TagsToSetAfterEdit
+    pos:=TagsToSetAfterEdit.IndexOfName(TagEditor.Strings.Names[i]);
+    if pos>-1 then  //yes
     begin
-      if TagEditor.FindRow(TagsToSetAfterEdit.ValueFromIndex[pos], pos1) then
+      //find pos from tag to set if exists
+      if TagEditor.FindRow(TagsToSetAfterEdit.ValueFromIndex[pos], pos1) then //if value is a tag
       begin
-        //if value is a tag
-        if Not (TagEditor.Strings.ValueFromIndex[pos1-1]='-') then
-          //if source-tag filled
+        if Not ((TagEditor.Strings.ValueFromIndex[pos1-1]='-') or (TagEditor.Strings.ValueFromIndex[pos1-1]='')) then //if source-tag filled
+        begin
           TagEditor.Strings.ValueFromIndex[i]:=TagEditor.Strings.ValueFromIndex[pos1-1]
+          end;
       end
       else
+      begin
         //if value is not a tag
         TagEditor.Strings.ValueFromIndex[i]:=TagsToSetAfterEdit.ValueFromIndex[pos];
+      end;
     end;
   end;
 end;
@@ -325,18 +330,18 @@ end;
 procedure TMainForm.cbLoadImageChange(Sender: TObject);
 begin
   if cbLoadImage.Checked then
-    bLoadImage := true
+    bLoadImage:=true
   else
-    bLoadImage := false;
+    bLoadImage:=false;
 end;
 
-function TMainForm.ReadIni():Boolean;
+function TMainForm.ReadIni(): Boolean;
 begin
-  Result := false;
-  if FileExists(AppPath + 'settings.ini') then
+  Result:=false;
+  if FileExists(AppPath+'settings.ini') then
   begin
     try
-      ini:=TIniFile.Create(AppPath + 'settings.ini');
+      ini:=TIniFile.Create(AppPath+'settings.ini');
       //todo read [ExifToolWriteArgs]  [ExifToolReadArgs]
       ini.ReadSection('TagsToRead', TagsToRead);
       ini.ReadSectionRaw('TagsToInitAnyway', TagsToInitAnyway);
@@ -365,23 +370,23 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  AppPath := ExtractFilePath(ParamStr(0));
-  north_x := 0;
-  view_x := 0;
-  TagsToRead := Tstringlist.Create;
-  TagsToInitAnyway := Tstringlist.Create;
-  TagsToInitIfNotExists := Tstringlist.Create;
-  TagsToSetAfterEdit := Tstringlist.Create;
-  if not FileExists(AppPath + 'settings.ini') then
+  AppPath:=ExtractFilePath(ParamStr(0));
+  north_x:=0;
+  view_x:=0;
+  TagsToRead:=Tstringlist.Create;
+  TagsToInitAnyway:=Tstringlist.Create;
+  TagsToInitIfNotExists:=Tstringlist.Create;
+  TagsToSetAfterEdit:=Tstringlist.Create;
+  if not FileExists(AppPath+'settings.ini') then
   begin
     //todo write default ini
   end;
   if ReadIni then
   begin
-    cbStayOnTop.Checked := bStayOnTop;
-    cbLoadImage.Checked := bLoadImage;
+    cbStayOnTop.Checked:=bStayOnTop;
+    cbLoadImage.Checked:=bLoadImage;
       //check exiftool
-      if not FileExists(AppPath + ExiftoolPath) then
+      if not FileExists(AppPath+ExiftoolPath) then
       begin
         ShowMessage('exiftool not found');
         Application.Terminate;
@@ -401,7 +406,7 @@ begin
   end;
 end;
 
-procedure TMainForm.LoadImage(ImageFile:String);
+procedure TMainForm.LoadImage(ImageFile: String);
 var
   ImgLoadThread:TImgLoadThread;
 begin
@@ -441,7 +446,7 @@ begin
   end;
 end;
 
-procedure TMainForm.imgLoadThreadOnTerminate(ASender : TObject );
+procedure TMainForm.imgLoadThreadOnTerminate(ASender: TObject);
 begin
  bImageLoadThreadTerminated:=true;
  ProgressForm.Hide;
@@ -466,7 +471,7 @@ begin
   SaveMousePos(x,y);
 end;
 
-procedure TMainForm.SaveMousePos(x,y:Integer);
+procedure TMainForm.SaveMousePos(x,y: Word);
 begin
   if image_loaded and bMouseDown and (x>=0) and (x<=Image1.Width) and (y>=0) and (y<=Image1.Height) then
   begin
@@ -515,7 +520,7 @@ end;
 
 procedure TMainForm.InitPos();
 begin
-  if (TagEditor.Values[NorthDirectionTag] <> '') and (TagEditor.Values[NorthDirectionTag] <> '-') then
+  if (TagEditor.Values[NorthDirectionTag]<>'') and (TagEditor.Values[NorthDirectionTag] <> '-') then
     north_x:=NorthDegToPos(StrToInt(TagEditor.Values[NorthDirectionTag]), Image1.Width);
   if (TagEditor.Values[InitialViewTag] <> '') and (TagEditor.Values[InitialViewTag] <> '-') then
     view_x := ViewDegToPos(StrToInt(TagEditor.Values[InitialViewTag]),north_x,Image1.Width);

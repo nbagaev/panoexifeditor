@@ -57,7 +57,7 @@ begin
     //load tiff
     tiffReader := TFPReaderTiff.Create;
     SourceImage.LoadFromFile(imgPath, tiffReader);
-    ResizedImage:=resizeImageSlow(SourceImage, MainForm.Image1.Width, MainForm.Image1.Height);
+    ResizedImage:=resizeImageFast(SourceImage, MainForm.Image1.Width, MainForm.Image1.Height);
     Synchronize(@AssignImage);
   finally
     SourceImage.Free;

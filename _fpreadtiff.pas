@@ -2164,7 +2164,7 @@ var
     // read two or three bytes
     if CurBitLength+SrcPosBit>16 then begin
       // read from three bytes      SrcPos + 3 > Count then Exit ( EoiCode ) ;
-      if SrcPos+3>Count then Exit ( EoiCode );//Error('LZW stream overrun');
+      if SrcPos+3>Count then Exit ( EoiCode );// Error('LZW stream overrun');
       v:=PByte(Buffer)[SrcPos];
       inc(SrcPos);
       v:=(v shl 8)+PByte(Buffer)[SrcPos];
@@ -2173,7 +2173,7 @@ var
       v:=v shr (24-CurBitLength-SrcPosBit);
     end else begin
       // read from two bytes
-      if SrcPos+2>Count then Exit ( EoiCode );//Error('LZW stream overrun');
+      if SrcPos+2>Count then Exit ( EoiCode );// Error('LZW stream overrun');
       v:=PByte(Buffer)[SrcPos];
       inc(SrcPos);
       v:=(v shl 8)+PByte(Buffer)[SrcPos];
