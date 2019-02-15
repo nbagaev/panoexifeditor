@@ -1,23 +1,23 @@
 object MainForm: TMainForm
-  Left = 626
-  Height = 683
-  Top = 38
+  Left = 310
+  Height = 676
+  Top = 76
   Width = 615
   AllowDropFiles = True
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Pano Exif Editor'
-  ClientHeight = 683
+  ClientHeight = 676
   ClientWidth = 615
   OnClose = FormClose
   OnCreate = FormCreate
   OnDropFiles = FormDropFiles
   Position = poScreenCenter
-  LCLVersion = '1.8.0.6'
+  LCLVersion = '2.0.0.4'
   object TagEditor: TValueListEditor
     Left = 8
-    Height = 356
-    Top = 320
+    Height = 352
+    Top = 316
     Width = 472
     DefaultColWidth = 250
     FixedCols = 0
@@ -48,13 +48,13 @@ object MainForm: TMainForm
     )
     ColWidths = (
       250
-      218
+      207
     )
   end
   object btnSelectImage: TButton
     Left = 494
     Height = 25
-    Top = 320
+    Top = 316
     Width = 112
     Caption = 'Select image file'
     OnClick = btnSelectImageClick
@@ -63,7 +63,7 @@ object MainForm: TMainForm
   object btnWriteTags: TButton
     Left = 494
     Height = 25
-    Top = 648
+    Top = 644
     Width = 112
     Caption = 'Write tags'
     OnClick = btnWriteTagsClick
@@ -71,9 +71,9 @@ object MainForm: TMainForm
   end
   object rbtnNorth: TRadioButton
     Left = 494
-    Height = 19
+    Height = 24
     Top = 376
-    Width = 51
+    Width = 66
     Caption = 'North'
     Checked = True
     Font.Color = clRed
@@ -84,9 +84,9 @@ object MainForm: TMainForm
   end
   object rbtnView: TRadioButton
     Left = 494
-    Height = 19
+    Height = 24
     Top = 416
-    Width = 76
+    Width = 97
     Caption = 'Initial view'
     Font.Color = clGreen
     ParentColor = False
@@ -99,8 +99,8 @@ object MainForm: TMainForm
     Top = 8
     Width = 600
     BorderStyle = bsSingle
-    ClientHeight = 296
-    ClientWidth = 596
+    ClientHeight = 298
+    ClientWidth = 598
     TabOrder = 5
     object Image1: TImage
       Cursor = crCross
@@ -118,18 +118,18 @@ object MainForm: TMainForm
   end
   object cbStayOnTop: TCheckBox
     Left = 494
-    Height = 19
+    Height = 24
     Top = 456
-    Width = 80
+    Width = 102
     Caption = 'Stay on top'
     OnChange = cbStayOnTopChange
     TabOrder = 6
   end
   object cbLoadImage: TCheckBox
     Left = 494
-    Height = 19
+    Height = 24
     Top = 496
-    Width = 82
+    Width = 104
     Caption = 'Load image'
     OnChange = cbLoadImageChange
     TabOrder = 7

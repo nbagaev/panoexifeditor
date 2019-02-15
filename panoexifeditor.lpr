@@ -1,7 +1,7 @@
 program panoexifeditor;
 
 {$mode objfpc}{$H+}
-
+{$define UseCThreads}
 uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,

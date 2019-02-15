@@ -204,8 +204,8 @@ begin
   begin
     InitTags();
     InitPos();
-    if bLoadImage then
     Image1.Picture.Clear;
+    if bLoadImage then
     LoadImage(ImageFile);
   end;
 end;
@@ -351,8 +351,8 @@ begin
       InitialViewTag := ini.ReadString('Settings','InitialViewTag','xmp:InitialViewHeadingDegrees');
       bLoadImage := ini.ReadBool('Settings','LoadImage',true);
       bStayOnTop := ini.ReadBool('Settings','StayOnTop',true);
-      ExiftoolPath :=ini.ReadString('Settings','ExiftoolPath','exiftool\exiftool.exe');
-      ArgfilePath :=ini.ReadString('Settings','ArgfilePath','exiftool\argfile.txt');
+      ExiftoolPath :=ini.ReadString('Settings','ExiftoolPath','exiftool/exiftool.exe');
+      ArgfilePath :=ini.ReadString('Settings','ArgfilePath','exiftool/argfile.txt');
       Result := true;
     finally
       ini.Free;
@@ -377,6 +377,7 @@ begin
   TagsToInitAnyway:=Tstringlist.Create;
   TagsToInitIfNotExists:=Tstringlist.Create;
   TagsToSetAfterEdit:=Tstringlist.Create;
+
   if not FileExists(AppPath+'settings.ini') then
   begin
     //todo write default ini

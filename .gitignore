@@ -2,7 +2,7 @@
 exiftool/
 lib/
 backup/
-dist/
+deploy/
 argfile.txt
 *.exe
 *.zip
