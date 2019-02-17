@@ -1,5 +1,4 @@
 *.lps
-exiftool/
 lib/
 backup/
 deploy/
