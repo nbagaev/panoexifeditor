@@ -1,9 +1,8 @@
 *.lps
 lib/
 backup/
-deploy/
 argfile.txt
-*.exe
+panoexifeditor.exe
 *.zip
 *.jpg
 todo.txt
