@@ -92,7 +92,7 @@ begin
     Result:=0
 end;
 
-function NorthDegToPos(deg,img_width: Int16): Int16;
+function NorthDegToPos(deg: Single; img_width: Int16): Int16;
 begin
   if (deg<=180) then
      Result:=Trunc(img_width/2-deg*img_width/360)
@@ -347,13 +347,13 @@ begin
       ini.ReadSectionRaw('TagsToInitAnyway', TagsToInitAnyway);
       ini.ReadSectionRaw('TagsToInitIfNotExists', TagsToInitIfNotExists);
       ini.ReadSectionRaw('TagsToSetAfterEdit', TagsToSetAfterEdit);
-      NorthDirectionTag := ini.ReadString('Settings','NorthDirectionTag','xmp:PoseHeadingDegrees');
-      InitialViewTag := ini.ReadString('Settings','InitialViewTag','xmp:InitialViewHeadingDegrees');
-      bLoadImage := ini.ReadBool('Settings','LoadImage',true);
-      bStayOnTop := ini.ReadBool('Settings','StayOnTop',true);
-      ExiftoolPath :=ini.ReadString('Settings','ExiftoolPath','exiftool/exiftool.exe');
-      ArgfilePath :=ini.ReadString('Settings','ArgfilePath','exiftool/argfile.txt');
-      Result := true;
+      NorthDirectionTag:=ini.ReadString('Settings','NorthDirectionTag','xmp:PoseHeadingDegrees');
+      InitialViewTag:=ini.ReadString('Settings','InitialViewTag','xmp:InitialViewHeadingDegrees');
+      bLoadImage:=ini.ReadBool('Settings','LoadImage',True);
+      bStayOnTop:=ini.ReadBool('Settings','StayOnTop',True);
+      ExiftoolPath:=ini.ReadString('Settings','ExiftoolPath','exiftool/exiftool.exe');
+      ArgfilePath:=ini.ReadString('Settings','ArgfilePath','exiftool/argfile.txt');
+      Result:=True;
     finally
       ini.Free;
     end;
@@ -370,14 +370,13 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  AppPath:=ExtractFilePath(ParamStr(0));
+  AppPath:=Application.Location;
   north_x:=0;
   view_x:=0;
   TagsToRead:=Tstringlist.Create;
   TagsToInitAnyway:=Tstringlist.Create;
   TagsToInitIfNotExists:=Tstringlist.Create;
   TagsToSetAfterEdit:=Tstringlist.Create;
-
   if not FileExists(AppPath+'settings.ini') then
   begin
     //todo write default ini
@@ -394,7 +393,7 @@ begin
       end;
       if ParamCount>0 then
       begin
-        if (MatchStr(LowerCase(ExtractFileExt(ParamStr(1))), ['.jpg', '.jpeg', '.tif', '.tiff'])) then
+        if (MatchStr(LowerCase(ExtractFileExt(UnicodeString(ParamStr(1)))), ['.jpg', '.jpeg', '.tif', '.tiff'])) then
         begin
           ImageFile:=ParamStr(1);
           Start;
@@ -457,7 +456,7 @@ end;
 procedure TMainForm.FormDropFiles(Sender: TObject; const FileNames: array of String
   );
 begin
-  if (MatchStr(LowerCase(ExtractFileExt(FileNames[0])), ['.jpg', '.jpeg', '.tif', '.tiff'])) then
+  if (MatchStr(LowerCase(ExtractFileExt(UnicodeString(FileNames[0]))), ['.jpg', '.jpeg', '.tif', '.tiff'])) then
   begin
     ImageFile:=FileNames[0];
     Start;
@@ -473,8 +472,10 @@ begin
 end;
 
 procedure TMainForm.SaveMousePos(x,y: Word);
+var null:Word;
 begin
-  if image_loaded and bMouseDown and (x>=0) and (x<=Image1.Width) and (y>=0) and (y<=Image1.Height) then
+  null:=0;
+  if image_loaded and bMouseDown and (x>=null) and (x<=Image1.Width) and (y>=null) and (y<=Image1.Height) then
   begin
     if rbtnNorth.Checked then
       north_x:=x
@@ -521,8 +522,9 @@ end;
 
 procedure TMainForm.InitPos();
 begin
+  DefaultFormatSettings.DecimalSeparator:='.';
   if (TagEditor.Values[NorthDirectionTag]<>'') and (TagEditor.Values[NorthDirectionTag] <> '-') then
-    north_x:=NorthDegToPos(StrToInt(TagEditor.Values[NorthDirectionTag]), Image1.Width);
+    north_x:=NorthDegToPos(StrToFloat(TagEditor.Values[NorthDirectionTag]), Image1.Width);
   if (TagEditor.Values[InitialViewTag] <> '') and (TagEditor.Values[InitialViewTag] <> '-') then
     view_x := ViewDegToPos(StrToInt(TagEditor.Values[InitialViewTag]),north_x,Image1.Width);
   Image1.Invalidate;
@@ -531,7 +533,7 @@ end;
 procedure TMainForm.UpdatePos();
 begin
   if (TagEditor.Values[NorthDirectionTag] <> '') and (TagEditor.Values[NorthDirectionTag] <> '-') then
-    north_x:=NorthDegToPos(StrToInt(TagEditor.Values[NorthDirectionTag]), Image1.Width);
+    north_x:=NorthDegToPos(StrToFloat(TagEditor.Values[NorthDirectionTag]), Image1.Width);
   if (TagEditor.Values[InitialViewTag] <> '') and (TagEditor.Values[InitialViewTag] <> '-') then
   begin
     TagEditor.Values[InitialViewTag]:=IntToStr(ViewPosToDeg(view_x,north_x,Image1.Width));

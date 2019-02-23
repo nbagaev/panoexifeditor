@@ -48,7 +48,7 @@ object MainForm: TMainForm
     )
     ColWidths = (
       250
-      207
+      201
     )
   end
   object btnSelectImage: TButton
@@ -71,9 +71,9 @@ object MainForm: TMainForm
   end
   object rbtnNorth: TRadioButton
     Left = 494
-    Height = 24
+    Height = 19
     Top = 376
-    Width = 66
+    Width = 51
     Caption = 'North'
     Checked = True
     Font.Color = clRed
@@ -84,9 +84,9 @@ object MainForm: TMainForm
   end
   object rbtnView: TRadioButton
     Left = 494
-    Height = 24
+    Height = 19
     Top = 416
-    Width = 97
+    Width = 76
     Caption = 'Initial view'
     Font.Color = clGreen
     ParentColor = False
@@ -99,8 +99,8 @@ object MainForm: TMainForm
     Top = 8
     Width = 600
     BorderStyle = bsSingle
-    ClientHeight = 298
-    ClientWidth = 598
+    ClientHeight = 296
+    ClientWidth = 596
     TabOrder = 5
     object Image1: TImage
       Cursor = crCross
@@ -118,18 +118,18 @@ object MainForm: TMainForm
   end
   object cbStayOnTop: TCheckBox
     Left = 494
-    Height = 24
+    Height = 19
     Top = 456
-    Width = 102
+    Width = 80
     Caption = 'Stay on top'
     OnChange = cbStayOnTopChange
     TabOrder = 6
   end
   object cbLoadImage: TCheckBox
     Left = 494
-    Height = 24
+    Height = 19
     Top = 496
-    Width = 104
+    Width = 82
     Caption = 'Load image'
     OnChange = cbLoadImageChange
     TabOrder = 7

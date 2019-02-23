@@ -37,6 +37,7 @@ begin
   SourceImage := TFPCompactImgRGB8Bit.Create(0,0);
   ResizedImage := TFPCompactImgRGB8Bit.Create(MainForm.Image1.Width, MainForm.Image1.Height);
   SourceImage.UsePalette := False;
+  ResizedImage.UsePalette := False;
   if (MatchStr(LowerCase(ExtractFileExt(imgPath)), ['.jpg', '.jpeg'])) then
   try
     //load jpg
@@ -45,31 +46,29 @@ begin
     jpegReader.Performance := jpBestSpeed;
     jpegReader.Smoothing := false;
     SourceImage.LoadFromFile(imgPath, jpegReader);
-    ResizedImage:=resizeImageFast(SourceImage, MainForm.Image1.Width, MainForm.Image1.Height);
+    resizeImageFast(SourceImage,ResizedImage);
     Synchronize(@AssignImage);
   finally
     jpegReader.Free;
-    ResizedImage.Free;
-    SourceImage.Free;
   end
   else
   try
     //load tiff
     tiffReader := TFPReaderTiff.Create;
     SourceImage.LoadFromFile(imgPath, tiffReader);
-    ResizedImage:=resizeImageFast(SourceImage, MainForm.Image1.Width, MainForm.Image1.Height);
+    resizeImageFast(SourceImage,ResizedImage);
     Synchronize(@AssignImage);
   finally
-    SourceImage.Free;
-    ResizedImage.Free;
     tiffReader.Free;
   end;
+  SourceImage.Free;
+  ResizedImage.Free;
 end;
 
 Constructor TImgLoadThread.Create(CreateSuspended : boolean);
-  begin
-      FreeOnTerminate := True;
-    inherited Create(CreateSuspended);
+begin
+  FreeOnTerminate := True;
+  inherited Create(CreateSuspended);
 end;
 end.
 
