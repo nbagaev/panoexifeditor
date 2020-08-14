@@ -7,6 +7,6 @@ This is a Lazarus project.
 
 Note: only equirectangular panoramas are supported.
 
-fully configurable in [settings.ini](https://github.com/nbagaev/panoexifeditor/blob/master/deploy/win64/settings.ini)
+Fully configurable in [settings.ini](https://github.com/nbagaev/panoexifeditor/blob/master/deploy/win64/settings.ini)
 
 ![panoexifeditor.jpg](panoexifeditor.jpg)
