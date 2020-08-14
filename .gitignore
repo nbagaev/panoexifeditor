@@ -4,5 +4,6 @@ backup/
 argfile.txt
 panoexifeditor.exe
 *.zip
-*.jpg
+
 todo.txt
+deploy_
